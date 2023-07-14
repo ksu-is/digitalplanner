@@ -11,9 +11,9 @@
 #Enhancements and Refinements**
   - [ ] Enhance task management with due date reminders
   - [ ] Implement customization options for planner layout and themes
-  - [ ] Develop collaborative features (shared tasks, team management, etc.)
-  - [ ] Integrate notifications and reminders system
-  - [ ] Implement search functionality within the planner
+  - [ ] Develop collaborative features (shared tasks, team management,meetings, etc.)
+  - [ ] Integrate notifications and reminders system that alert hours in advance
+  - [ ] Implement search functionality within the planner to search specifc key words
   - [ ] Enhance note-taking capabilities (formatting, attachments, etc.)
   - [ ] Perform comprehensive testing and bug fixes
 
