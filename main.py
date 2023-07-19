@@ -24,7 +24,21 @@ class DigitalPlanner:
                 print(f"{i}. {task}")
         else:
             print("No tasks found for this date.")
-   
+    
+    def display_calendar(self, year, month):
+        cal = self.calendar.monthdayscalendar(year, month)
+        header = calendar.month_name[month] + " " + str(year)
+        print(f"{header.center(20)}")
+        print("Mon Tue Wed Thu Fri Sat Sun")
+        for week in cal:
+            for day in week:
+                if day == 0:
+                    print("    ", end="")
+                else:
+                    tasks_indicator = " " if str(day) not in self.tasks else "*"
+                    print(f"{day:2d}{tasks_indicator}", end=" ")
+            print()
+              
                        
                     
 
