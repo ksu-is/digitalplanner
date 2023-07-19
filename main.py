@@ -71,7 +71,12 @@ class Authentication:
                 choice = input("Do you want to try again? (y/n): ")
                 if choice.lower() != "y":
                     return False
-                    
+
+    def validate_credentials(self, username, password):
+        if username in self.users and self.users[username] == password:
+            return True
+        else:
+            return False
 
 
 
