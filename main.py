@@ -38,7 +38,10 @@ class DigitalPlanner:
                     tasks_indicator = " " if str(day) not in self.tasks else "*"
                     print(f"{day:2d}{tasks_indicator}", end=" ")
             print()
-              
+    
+    def clear_tasks(self):
+        self.tasks = {}
+            
                        
                     
 
