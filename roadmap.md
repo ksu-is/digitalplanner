@@ -6,7 +6,7 @@
   - [x] Develop task creation and management features
   - [ ] Implement note-taking functionality
   - [ ] Design and develop user interface for the main planner view
-  - [ ] Conduct basic testing and bug fixes
+  - [x] Conduct basic testing and bug fixes
 
 #Enhancements and Refinements**
   - [ ] Enhance task management with due date reminders
