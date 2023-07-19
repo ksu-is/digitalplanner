@@ -41,7 +41,22 @@ class DigitalPlanner:
     
     def clear_tasks(self):
         self.tasks = {}
-            
+
+
+class Authentication:
+    def __init__(self):
+        self.users = {}
+
+    def register(self):
+        while True:
+            username = input("Enter a username: ")
+            if username in self.users:
+                print("Username already exists. Please choose a different username.")
+            else:
+                password = input("Enter a password: ")
+                self.users[username] = password
+                print("Registration successful!")
+                return
                        
                     
 
