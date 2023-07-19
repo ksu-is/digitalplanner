@@ -88,5 +88,21 @@ while True:
     print("2. Login")
     print("0. Exit")
 
+    choice = input("Please select an option: ")
 
+    if choice == "0":
+        break
+    elif choice == "1":
+        authentication.register()
+    elif choice == "2":
+        if authentication.login():
+            # Display the menu options
+            while True:
+                print("\n--- Digital Planner Menu ---")
+                print("1. Display Calendar")
+                print("2. Add Task")
+                print("3. Display Tasks")
+                print("4. Remove Task")
+                print("5. Clear All Tasks")
+                print("0. Logout")
 
