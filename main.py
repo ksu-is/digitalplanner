@@ -79,4 +79,14 @@ class Authentication:
             return False
 
 
+authentication = Authentication()
+planner = DigitalPlanner()
+
+while True:
+    print("--- Digital Planner Menu ---")
+    print("1. Register")
+    print("2. Login")
+    print("0. Exit")
+
+
 
