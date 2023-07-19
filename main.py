@@ -106,3 +106,33 @@ while True:
                 print("5. Clear All Tasks")
                 print("0. Logout")
 
+                choice = input("Please select an option: ")
+
+                if choice == "0":
+                    break
+                elif choice == "1":
+                    year = int(input("Enter the year: "))
+                    month = int(input("Enter the month (1-12): "))
+                    planner.display_calendar(year, month)
+                elif choice == "2":
+                    date = input("Enter the date (YYYY-MM-DD): ")
+                    task = input("Enter the task: ")
+                    planner.add_task(date, task)
+                    print("Task added successfully!")
+                elif choice == "3":
+                    date = input("Enter the date (YYYY-MM-DD): ")
+                    planner.display_tasks(date)
+                elif choice == "4":
+                    date = input("Enter the date (YYYY-MM-DD): ")
+                    task = input("Enter the task: ")
+                    planner.remove_task(date, task)
+                    print("Task removed successfully!")
+                elif choice == "5":
+                    planner.clear_tasks()
+                    print("All tasks cleared!")
+                else:
+                    print("Invalid choice. Please try again.")
+        else:
+            print("Login failed. Please register or try again.")
+    else:
+        print("Invalid choice. Please try again.")
