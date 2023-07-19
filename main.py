@@ -57,7 +57,20 @@ class Authentication:
                 self.users[username] = password
                 print("Registration successful!")
                 return
-                       
+    
+    def login(self):
+        while True:
+            username = input("Enter your username: ")
+            password = input("Enter your password: ")
+
+            if self.validate_credentials(username, password):
+                print("Login successful!")
+                return True
+            else:
+                print("Invalid username or password!")
+                choice = input("Do you want to try again? (y/n): ")
+                if choice.lower() != "y":
+                    return False
                     
 
 
