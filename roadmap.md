@@ -17,8 +17,8 @@
 -[x]User Authentication: Improve the authentication process by securely storing passwords and adding password hashing.
 
 #final
-  - [ ] Implement final refinements and improvements
-  - [ ] Prepare documentation and user guide for the Digital Planner
-  - [ ] Finalize deployment process for web 
-  - [ ] Conduct final testing and quality assurance
-  - [ ] Release Digital Planner
+  - [x] Implement final refinements and improvements
+  - [x] Prepare documentation and user guide for the Digital Planner
+  - [x] Finalize deployment process for web 
+  - [x] Conduct final testing and quality assurance
+  - [x] Release Digital Planner
