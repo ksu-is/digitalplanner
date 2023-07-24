@@ -1,4 +1,6 @@
 import calendar
+import tkinter as tk
+from tkinter import ttk, messagebox, simpledialog
 
 class DigitalPlanner:
     def __init__(self):
@@ -19,25 +21,34 @@ class DigitalPlanner:
     
     def display_tasks(self, date):
         if date in self.tasks:
-            print(f"Tasks for {date}:")
+            tasks = f"Tasks for {date}:\n"
             for i, task in enumerate(self.tasks[date], 1):
-                print(f"{i}. {task}")
+                tasks += f"{i}. {task}\n"
+            return tasks
         else:
-            print("No tasks found for this date.")
-    
+            return f"No tasks found for {date}."
+
     def display_calendar(self, year, month):
         cal = self.calendar.monthdayscalendar(year, month)
         header = calendar.month_name[month] + " " + str(year)
-        print(f"{header.center(20)}")
-        print("Mon Tue Wed Thu Fri Sat Sun")
+
+        # Create a new window to display the calendar
+        calendar_window = tk.Toplevel()
+        calendar_window.title("Calendar")
+
+        # Create a Treeview widget to display the calendar
+        tree = ttk.Treeview(calendar_window, columns=[str(i) for i in range(7)], show='headings')
+
+        # Set column headings for weekdays
+        for i, day in enumerate(calendar.day_name):
+            tree.heading(str(i), text=day)
+
+        # Insert calendar data into the Treeview widget
         for week in cal:
-            for day in week:
-                if day == 0:
-                    print("    ", end="")
-                else:
-                    tasks_indicator = " " if str(day) not in self.tasks else "*"
-                    print(f"{day:2d}{tasks_indicator}", end=" ")
-            print()
+            tree.insert('', 'end', values=[str(day) if day != 0 else '' for day in week])
+
+        # Pack the Treeview widget
+        tree.pack()
     
     def clear_tasks(self):
         self.tasks = {}
@@ -49,27 +60,27 @@ class Authentication:
 
     def register(self):
         while True:
-            username = input("Enter a username: ")
+            username = simpledialog.askstring("Registration", "Enter a username:")
             if username in self.users:
-                print("Username already exists. Please choose a different username.")
+                messagebox.showerror("Registration", "Username already exists. Please choose a different username.")
             else:
-                password = input("Enter a password: ")
+                password = simpledialog.askstring("Registration", "Enter a password:")
                 self.users[username] = password
-                print("Registration successful!")
+                messagebox.showinfo("Registration", "Registration successful!")
                 return
-    
+
     def login(self):
         while True:
-            username = input("Enter your username: ")
-            password = input("Enter your password: ")
+            username = simpledialog.askstring("Login", "Enter your username:")
+            password = simpledialog.askstring("Login", "Enter your password:")
 
             if self.validate_credentials(username, password):
-                print("Login successful!")
+                messagebox.showinfo("Login", "Login successful!")
                 return True
             else:
-                print("Invalid username or password!")
-                choice = input("Do you want to try again? (y/n): ")
-                if choice.lower() != "y":
+                messagebox.showerror("Login", "Invalid username or password!")
+                choice = messagebox.askquestion("Try Again?", "Do you want to try again?")
+                if choice.lower() != "yes":
                     return False
 
     def validate_credentials(self, username, password):
@@ -79,60 +90,98 @@ class Authentication:
             return False
 
 
+def show_main_menu():
+    root.withdraw()  # Hide the main registration window
+    main_menu_window = tk.Toplevel(root)
+    main_menu_window.title("Digital Planner Menu")
+
+    def display_calendar():
+        year = int(year_entry.get())
+        month = int(month_entry.get())
+        planner.display_calendar(year, month)
+
+    def add_task():
+        date = date_entry.get()
+        task = task_entry.get()
+        planner.add_task(date, task)
+        messagebox.showinfo("Task Added", "Task added successfully!")
+
+    def display_tasks():
+        date = date_entry.get()
+        tasks = planner.display_tasks(date)
+        tasks_text.delete(1.0, tk.END)  # Clear previous entries
+        tasks_text.insert(tk.END, tasks)
+
+    def back_to_registration():
+        main_menu_window.withdraw()  # Hide the current window
+        root.deiconify()  # Show the main registration page
+
+    # Create labels, entries, and buttons for menu options using grid layout
+    year_label = tk.Label(main_menu_window, text="Enter the year:")
+    year_label.grid(row=0, column=0, padx=10, pady=10)
+    year_entry = tk.Entry(main_menu_window)
+    year_entry.grid(row=0, column=1, padx=10, pady=10)
+
+    month_label = tk.Label(main_menu_window, text="Enter the month (1-12):")
+    month_label.grid(row=1, column=0, padx=10, pady=10)
+    month_entry = tk.Entry(main_menu_window)
+    month_entry.grid(row=1, column=1, padx=10, pady=10)
+
+    display_calendar_button = tk.Button(main_menu_window, text="Display Calendar", command=display_calendar)
+    display_calendar_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+    date_label = tk.Label(main_menu_window, text="Enter the date (YYYY-MM-DD):")
+    date_label.grid(row=3, column=0, padx=10, pady=10)
+    date_entry = tk.Entry(main_menu_window)
+    date_entry.grid(row=3, column=1, padx=10, pady=10)
+
+    task_label = tk.Label(main_menu_window, text="Enter the task:")
+    task_label.grid(row=4, column=0, padx=10, pady=10)
+    task_entry = tk.Entry(main_menu_window)
+    task_entry.grid(row=4, column=1, padx=10, pady=10)
+
+    add_task_button = tk.Button(main_menu_window, text="Add Task", command=add_task)
+    add_task_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
+    display_tasks_button = tk.Button(main_menu_window, text="Display Tasks", command=display_tasks)
+    display_tasks_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+    tasks_text = tk.Text(main_menu_window, width=40, height=10)
+    tasks_text.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+
+    clear_tasks_button = tk.Button(main_menu_window, text="Clear All Tasks", command=planner.clear_tasks)
+    clear_tasks_button.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
+
+    back_button = tk.Button(main_menu_window, text="Back to Registration", command=back_to_registration)
+    back_button.grid(row=10, column=0, columnspan=2, padx=10, pady=10)
+
+# Create a Tkinter window
+root = tk.Tk()
+root.title("Digital Planner")
+
 authentication = Authentication()
 planner = DigitalPlanner()
 
-while True:
-    print("--- Digital Planner Menu ---")
-    print("1. Register")
-    print("2. Login")
-    print("0. Exit")
+def register():
+    authentication.register()
+    messagebox.showinfo("Registration", "Registration successful!")
 
-    choice = input("Please select an option: ")
+def login():
+    if authentication.login():
+        show_main_menu()
 
-    if choice == "0":
-        break
-    elif choice == "1":
-        authentication.register()
-    elif choice == "2":
-        if authentication.login():
-            # Display the menu options
-            while True:
-                print("\n--- Digital Planner Menu ---")
-                print("1. Display Calendar")
-                print("2. Add Task")
-                print("3. Display Tasks")
-                print("4. Remove Task")
-                print("5. Clear All Tasks")
-                print("0. Logout")
+# Create labels and buttons for the initial menu
+welcome_label = tk.Label(root, text="Welcome to Digital Planner!", font=("Helvetica", 16))
+welcome_label.pack(pady=20)
 
-                choice = input("Please select an option: ")
+register_button = tk.Button(root, text="Register", command=register)
+register_button.pack()
 
-                if choice == "0":
-                    break
-                elif choice == "1":
-                    year = int(input("Enter the year: "))
-                    month = int(input("Enter the month (1-12): "))
-                    planner.display_calendar(year, month)
-                elif choice == "2":
-                    date = input("Enter the date (YYYY-MM-DD): ")
-                    task = input("Enter the task: ")
-                    planner.add_task(date, task)
-                    print("Task added successfully!")
-                elif choice == "3":
-                    date = input("Enter the date (YYYY-MM-DD): ")
-                    planner.display_tasks(date)
-                elif choice == "4":
-                    date = input("Enter the date (YYYY-MM-DD): ")
-                    task = input("Enter the task: ")
-                    planner.remove_task(date, task)
-                    print("Task removed successfully!")
-                elif choice == "5":
-                    planner.clear_tasks()
-                    print("All tasks cleared!")
-                else:
-                    print("Invalid choice. Please try again.")
-        else:
-            print("Login failed. Please register or try again.")
-    else:
-        print("Invalid choice. Please try again.")
+login_button = tk.Button(root, text="Login", command=login)
+login_button.pack()
+
+exit_button = tk.Button(root, text="Exit", command=root.quit)
+exit_button.pack()
+
+# Start the Tkinter event loop
+root.mainloop()
